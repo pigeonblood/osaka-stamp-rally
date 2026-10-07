@@ -20,5 +20,5 @@ export const settings = {
   stampDir: "stamps/",
   // 自宅でテストするときだけ true にすると、位置チェックなしで押せる。
   // 公開前に必ず false に戻すこと。
-  skipLocationCheck: true,
+  skipLocationCheck: false,
 };
