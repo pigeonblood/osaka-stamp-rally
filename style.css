@@ -1,0 +1,320 @@
+:root {
+  --paper: #E9EDE7;
+  --sheet: #F7F8F4;
+  --ink: #1F2B3D;
+  --ink-soft: #586273;
+  --rule: #C3CBC2;
+  --shu: #FF3300;
+  --shu-deep: #C42800;
+  --font-ui: "BIZ UDPGothic", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  --font-head: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.6 var(--font-ui);
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+}
+button { font: inherit; }
+a { color: var(--ink); }
+
+.shell { max-width: 760px; margin: 0 auto; }
+
+/* ---------- ヘッダー ---------- */
+.masthead { padding: 14px 16px 14px; }
+.masthead__row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.title {
+  margin: 0;
+  font: 800 23px/1.25 var(--font-head);
+  letter-spacing: 0.03em;
+}
+.title small {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  letter-spacing: 0.12em;
+}
+
+.login {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  background: var(--sheet);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.acct {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1.5px solid var(--rule);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--sheet);
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+.acct img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.progress { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+.ticks { flex: 1; display: flex; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.ticks li { flex: 1; height: 8px; border-radius: 1px; background: var(--rule); transition: background-color 0.4s; }
+.ticks li.on { background: var(--shu); }
+.tally { margin: 0; font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+.tally b { margin-right: 2px; font: 800 24px/1 var(--font-head); color: var(--ink); }
+
+/* ---------- お知らせ ---------- */
+.notice {
+  margin: 0 16px 12px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--shu);
+  background: var(--sheet);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.notice p { margin: 0; }
+.notice p + p { margin-top: 6px; }
+
+/* ---------- 地図 ---------- */
+.map-wrap { position: relative; scroll-margin-top: 8px; }
+#map {
+  height: min(62vh, 560px);
+  min-height: 340px;
+  background: #DCE1DA;
+  border-block: 1px solid var(--rule);
+}
+@media (min-width: 760px) {
+  .map-wrap { margin: 0 16px; }
+  #map { border: 1px solid var(--rule); border-radius: 4px; }
+}
+.leaflet-container { font-family: var(--font-ui); }
+.leaflet-tile-pane { filter: grayscale(1) contrast(0.9) brightness(1.06); }
+
+.locate {
+  position: absolute;
+  right: 12px;
+  bottom: 28px;
+  z-index: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 42px;
+  padding: 0 14px 0 12px;
+  border: 1.5px solid var(--ink);
+  border-radius: 21px;
+  background: var(--sheet);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(31, 43, 61, 0.18);
+  cursor: pointer;
+}
+.locate:disabled { opacity: 0.7; }
+
+.ward-label {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--ink);
+  font: 700 11px/1 var(--font-ui);
+  text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 4px #fff;
+}
+.ward-label::before { display: none; }
+
+.leaflet-control-attribution { font-size: 9.5px; line-height: 1.4; }
+/* 白地のスタンプPNGでも地図になじむよう、マーカー層ごと乗算で重ねる */
+.leaflet-marker-pane { mix-blend-mode: multiply; }
+.map-stamp { background: none; border: 0; }
+.map-stamp img { width: 34px; height: 34px; object-fit: contain; transform: rotate(var(--tilt, 0deg)); }
+
+/* ---------- ポップアップ ---------- */
+.ward-pop .leaflet-popup-content-wrapper {
+  background: var(--sheet);
+  color: var(--ink);
+  border-radius: 6px;
+  box-shadow: 0 8px 28px rgba(31, 43, 61, 0.24);
+}
+.ward-pop .leaflet-popup-tip { background: var(--sheet); }
+.ward-pop .leaflet-popup-content { margin: 14px 16px 12px; font: 14px/1.6 var(--font-ui); }
+.ward-pop a.leaflet-popup-close-button { width: 32px; height: 32px; font-size: 22px; line-height: 30px; color: var(--ink-soft); }
+.pop__name { margin: 0 0 8px; font: 800 21px/1.2 var(--font-head); }
+.pop__dist { margin: 0 0 10px; font-size: 13px; color: var(--ink-soft); }
+.pop__btn {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--shu-deep);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+.pop__btn:disabled { background: var(--rule); color: var(--ink-soft); cursor: default; }
+.pop__btn[aria-busy="true"] { background: var(--shu-deep); color: #fff; opacity: 0.65; }
+.pop__hint { margin: 6px 0 0; font-size: 12px; color: var(--ink-soft); }
+.pop__msg { margin: 10px 0 0; font-size: 13px; }
+.pop__msg:empty { display: none; }
+.pop__msg.is-error { color: var(--shu-deep); font-weight: 700; }
+.pop__done { display: flex; align-items: center; gap: 12px; }
+.pop__done p { margin: 0; font-size: 13px; color: var(--ink-soft); }
+.pop__stamp {
+  width: 68px;
+  height: 68px;
+  flex: none;
+  object-fit: contain;
+  transform: rotate(var(--tilt, 0deg));
+  mix-blend-mode: multiply;
+}
+
+/* ---------- スタンプ帳 ---------- */
+.book { padding: 24px 16px 32px; }
+.book__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.book__head h2 { margin: 0; font: 800 20px/1.3 var(--font-head); }
+.book__note { margin: 0; font-size: 13px; color: var(--ink-soft); }
+.book__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 6px;
+  margin: 0;
+  padding: 18px 10px 14px;
+  list-style: none;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+@media (min-width: 560px) {
+  .book__grid { grid-template-columns: repeat(6, 1fr); padding: 22px 16px 16px; }
+}
+.book__foot { margin: 10px 0 0; font-size: 12px; color: var(--ink-soft); }
+
+.cell__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 2px 0 4px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+.cell__btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cell__slot {
+  display: grid;
+  place-items: center;
+  width: 80%;
+  aspect-ratio: 1;
+  border: 1.5px dashed var(--rule);
+  border-radius: 50%;
+}
+.is-stamped .cell__slot { border-color: transparent; }
+.cell__slot img {
+  width: 114%;
+  height: 114%;
+  object-fit: contain;
+  transform: rotate(var(--tilt, 0deg));
+  mix-blend-mode: multiply;
+}
+.cell__name { margin-top: 6px; font-size: 12px; font-weight: 700; line-height: 1.3; }
+.cell__date { min-height: 1.4em; font-size: 11px; line-height: 1.4; color: var(--shu-deep); }
+.cell.is-flash .cell__slot { animation: flash 1.4s ease-out; }
+@keyframes flash {
+  0% { box-shadow: 0 0 0 0 rgba(255, 51, 0, 0.45); }
+  100% { box-shadow: 0 0 0 18px rgba(255, 51, 0, 0); }
+}
+
+/* ---------- 押印演出 ---------- */
+.press {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(31, 43, 61, 0.55);
+}
+.press[hidden] { display: none; }
+.press__card {
+  width: min(320px, 100%);
+  padding: 28px 22px 20px;
+  border-radius: 6px;
+  background: var(--sheet);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.press__slot { display: grid; place-items: center; width: 200px; height: 200px; margin: 0 auto 14px; }
+.press__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: rotate(var(--tilt, 0deg));
+  mix-blend-mode: multiply;
+}
+.press__ward { margin: 0; font: 800 25px/1.3 var(--font-head); }
+.press__date { margin: 4px 0 0; font-size: 13px; color: var(--ink-soft); }
+.press__count { margin: 14px 0 18px; font-weight: 700; }
+.press__close {
+  width: 100%;
+  min-height: 46px;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.press.is-pressing .press__img { animation: stamp-down 0.5s cubic-bezier(0.3, 0, 0.2, 1) both; }
+.press.is-pressing .press__card { animation: thud 0.5s ease-out both; }
+@keyframes stamp-down {
+  0% { opacity: 0; filter: blur(4px); transform: translateY(-12%) scale(1.7) rotate(var(--tilt, 0deg)); }
+  56% { opacity: 1; filter: blur(0); transform: scale(0.92) rotate(var(--tilt, 0deg)); }
+  74% { transform: scale(1.03) rotate(var(--tilt, 0deg)); }
+  100% { opacity: 1; transform: scale(1) rotate(var(--tilt, 0deg)); }
+}
+@keyframes thud {
+  0%, 52% { transform: none; }
+  60% { transform: translateY(4px); }
+  76% { transform: none; }
+}
+
+/* ---------- トースト ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 2100;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+.toast.is-shown { opacity: 1; transform: translate(-50%, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

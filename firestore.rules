@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 各自のスタンプは本人だけが読み書きできる。
+    // 一度押したスタンプは上書き・削除できない（作成のみ）。
+    match /users/{uid}/stamps/{wardCode} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && wardCode.matches('^271[0-2][0-9]$')
+        && request.resource.data.keys().hasOnly(['ward', 'stampedAt', 'lat', 'lng', 'distance', 'accuracy'])
+        && request.resource.data.stampedAt == request.time;
+    }
+  }
+}
