@@ -1,12 +1,13 @@
 // ① Firebaseコンソール →「プロジェクトの設定」→「マイアプリ」に表示される設定をそのまま貼り付ける。
 //    この値は公開されても問題ない（データの保護は firestore.rules が担う）。
-export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "",
-  appId: "",
+const firebaseConfig = {
+  apiKey: "AIzaSyD2do1lpmWhnqIn7tjAKnmomljMe7m-3-s",
+  authDomain: "osaka-stamp-rally.firebaseapp.com",
+  projectId: "osaka-stamp-rally",
+  storageBucket: "osaka-stamp-rally.firebasestorage.app",
+  messagingSenderId: "343225822912",
+  appId: "1:343225822912:web:93a46604df9692f46c4725",
+  measurementId: "G-2BNTKFYERS"
 };
 
 // ② スタンプラリーの設定
