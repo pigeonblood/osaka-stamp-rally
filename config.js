@@ -1,6 +1,6 @@
 // ① Firebaseコンソール →「プロジェクトの設定」→「マイアプリ」に表示される設定をそのまま貼り付ける。
 //    この値は公開されても問題ない（データの保護は firestore.rules が担う）。
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyD2do1lpmWhnqIn7tjAKnmomljMe7m-3-s",
   authDomain: "osaka-stamp-rally.firebaseapp.com",
   projectId: "osaka-stamp-rally",
